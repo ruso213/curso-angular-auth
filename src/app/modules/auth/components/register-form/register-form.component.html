@@ -1,5 +1,16 @@
 <h1 class="text-center font-bold py-2 text-gray-700">Enter your data</h1>
-<form [formGroup]="form" novalidate class="space-y-4" (ngSubmit)="register()">
+<form *ngIf="!isAvailable" [formGroup]="isAvailableForm" class="flex gap-3 flex-col" (ngSubmit)="checkEmail()">
+  <input
+        formControlName="email"
+        placeholder="Enter your email"
+        type="text"
+        class="w-full rounded bg-gray-100 border-gray-300 border-2"
+      />
+      <app-btn typeBtn="submit" color="success" [loading]="status === 'loading'" >
+        Check email
+      </app-btn>
+</form>
+<form *ngIf="isAvailable" [formGroup]="form" novalidate class="space-y-4" (ngSubmit)="register()">
   <div>
     <div class="relative">
       <input
@@ -74,7 +85,7 @@
         *ngIf="form.controls.password.hasError('minlength')"
         class="font-medium text-red-500 text-xs mt-1 ml-1"
       >
-        This field should be greater than 6 characters
+        This field should be greater than 8 characters
       </p>
     </div>
   </div>
@@ -103,7 +114,7 @@
         *ngIf="form.controls.confirmPassword.hasError('minlength')"
         class="font-medium text-red-500 text-xs mt-1 ml-1"
       >
-        This field should be greater than 6 characters
+        This field should be greater than 8 characters
       </p>
     </div>
   </div>

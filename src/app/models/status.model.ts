@@ -1,0 +1,1 @@
+export  type status = 'loading' | 'failed' | 'init' | 'success'

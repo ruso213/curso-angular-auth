@@ -10,6 +10,10 @@ const routes: Routes = [
     path: 'app',
     loadChildren: () => import('./modules/layout/layout.module').then((m) => m.LayoutModule),
   },
+  {
+    path:'rxjs',
+    loadChildren: ()=> import('./modules/rx-js/rx-js.module').then((m)=> m.RxJsModule)
+  }
 ];
 
 @NgModule({

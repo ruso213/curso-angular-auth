@@ -13,7 +13,7 @@ export class TokenService {
     localStorage.setItem('token', token)
   }
   getToken(){
-    localStorage.getItem('token')
+    return localStorage.getItem('token')
   }
   deleteToken(){
     localStorage.removeItem('token')

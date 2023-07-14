@@ -1,37 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { DataSourceUser } from './data-source';
+import { UserService } from 'src/app/service/user.service';
+import { AuthService } from 'src/app/service/auth.service';
 
 @Component({
   selector: 'app-users-table',
   templateUrl: './users-table.component.html'
 })
-export class UsersTableComponent  {
+export class UsersTableComponent implements OnInit {
 
   dataSource = new DataSourceUser();
   columns: string[] = ['id', 'avatar', 'name', 'email'];
-
-  constructor() {
-    this.dataSource.init([
-      {
-        id: 1,
-        name: 'User 1',
-        email: 'mail@mail.com',
-        avatar: 'https://api.lorem.space/image/face?w=150&h=150'
-      },
-      {
-        id: 2,
-        name: 'User 2',
-        email: 'mail2@mail.com',
-        avatar: 'https://api.lorem.space/image/face?w=150&h=150'
-      },
-      {
-        id: 3,
-        name: 'User 3',
-        email: 'mail3@mail.com',
-        avatar: 'https://api.lorem.space/image/face?w=150&h=150'
-      }
-    ]);
+  profileData$ = this.authService.profileData$
+  constructor(
+    private userService: UserService,
+    private authService : AuthService
+  ) {}
+  ngOnInit(): void {
+    this.userService.getAllUsers().subscribe(item =>{
+      this.dataSource.init(item)
+    })
   }
 
 }

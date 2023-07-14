@@ -21,3 +21,10 @@ export interface recovery {
     recoveryToken : string
     link: string
 }
+export interface profile{
+    id: number,
+    name: string
+    email: string
+    avatar: string
+    updatedAt: string
+  }

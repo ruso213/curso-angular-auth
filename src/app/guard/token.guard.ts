@@ -14,7 +14,7 @@ export class TokenGuard implements CanActivate {
 
   }
   canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const token = this.tokenService.getToken()
+    const token = this.tokenService.isValidRefreshToken()
     if(!token){
       this.router.navigate(['/login'])
       return false
@@ -22,8 +22,8 @@ export class TokenGuard implements CanActivate {
       return true
     }
   }
-  takeToken(){
+  /* takeToken(){
     const token = localStorage.getItem('token')
     
-  }
+  } */
 }

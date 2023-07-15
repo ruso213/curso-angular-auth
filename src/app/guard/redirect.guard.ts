@@ -12,7 +12,7 @@ export class RedirectGuard implements CanActivate {
      private tokenService: TokenService
   ){}
   canActivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    const token = this.tokenService.getToken()
+    const token = this.tokenService.isValidRefreshToken()
     if(token){
       this.router.navigate(['/app'])
       return false

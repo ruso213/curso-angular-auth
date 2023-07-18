@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { api } from '@models/api';
 import { userResponse } from '@models/user.model';
 import { TokenService } from './token.service';
+import { checkToken } from '@interceptors/token.interceptor';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,9 @@ export class UserService {
   ) { }
   getAllUsers(){
     const token = this.tokenService.getToken()
-    return this.http.get<userResponse[]>(`${api}/users`)
+    return this.http.get<userResponse[]>(`${api}/users`,{
+      context: checkToken()
+    })
   }
   
 }

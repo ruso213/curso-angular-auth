@@ -11,7 +11,8 @@ import { Observable, switchMap } from 'rxjs';
 import { TokenService } from '../service/token.service';
 import { AuthService } from '../service/auth.service';
 const CHECK_TOKEN = new HttpContextToken<boolean>(()=> false)
-function checkToken(){
+export function checkToken(){
+  
   return new HttpContext().set(CHECK_TOKEN , true)
 }
 @Injectable()
@@ -22,21 +23,20 @@ export class TokenInterceptor implements HttpInterceptor {
     private tokenService : TokenService,
     private authService : AuthService,
   ) {}
-  
+    
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     if(request.context.get(CHECK_TOKEN)){
       const isValidToken = this.tokenService.isValidToken()
       if(isValidToken){
-        return this.addToken(request, next)
+        return this.addTokenToRequest(request, next)
       }else{
-
         return this.updateAccessTokenAndRefreshToken(request, next)
       }
     }
     return next.handle(request)
   }
 
-  private addToken(request: HttpRequest<unknown>, next: HttpHandler){
+  private addTokenToRequest(request: HttpRequest<unknown>, next: HttpHandler){
     const token = this.tokenService.getToken()
       if(token){
          const requestClone = request.clone({
@@ -53,7 +53,7 @@ export class TokenInterceptor implements HttpInterceptor {
   const isValidRefreshToken = this.tokenService.isValidRefreshToken()
   if(refreshToken && isValidRefreshToken){
     return this.authService.refreshToken(refreshToken).pipe(
-      switchMap(()=> this.addToken(request, next))
+      switchMap(()=> this.addTokenToRequest(request, next))
     )
   }
   return next.handle(request)

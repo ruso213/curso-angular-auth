@@ -5,6 +5,7 @@ import { BehaviorSubject, Observable, map, switchMap, tap } from 'rxjs';
 import { TokenService } from './token.service';
 import { Router } from '@angular/router';
 import { api } from '@models/api';
+import { checkToken } from '@interceptors/token.interceptor';
 
 @Injectable({
   providedIn: 'root'
@@ -77,7 +78,9 @@ export class AuthService {
   }
   profile(){
     const token = this.tokenService.getToken()
-    return this.http.get<profile>(`${api}/auth/profile`).pipe(
+    return this.http.get<profile>(`${api}/auth/profile`, {
+      context: checkToken()
+    }).pipe(
       tap(item =>{
         this.profileData.next(item)
       })
